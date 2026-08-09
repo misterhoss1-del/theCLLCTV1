@@ -1,0 +1,15 @@
+{
+  "name": "cllctv-checkout-webhook",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Stripe -> GHL webhook relay for the Core/Full OS checkout flow (Path B in docs/checkout-to-nurture-flow.md)",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "stripe": "^16.2.0"
+  }
+}
