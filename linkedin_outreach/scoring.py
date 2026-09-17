@@ -16,6 +16,9 @@ def score_lead(lead: Lead, icp: ICPConfig) -> int:
     if lead.title and any(t.lower() in title for t in icp.exclude_titles):
         return 0
 
+    if lead.industry and any(i.lower() in industry for i in icp.exclude_industries):
+        return 0
+
     if lead.industry and any(i.lower() in industry for i in icp.industries):
         score += 20
 

@@ -13,6 +13,7 @@ def make_icp(**overrides) -> ICPConfig:
         keywords=["growth"],
         locations=["United States"],
         exclude_titles=["Intern"],
+        exclude_industries=[],
         scoring_rules=[],
         qualified_threshold=60,
         max_results=200,
@@ -47,6 +48,19 @@ def test_no_matches_is_disqualified():
     lead = Lead(id="3", title="Warehouse Associate", industry="Logistics")
     score = score_lead(lead, icp)
     assert classify(score, icp.qualified_threshold) == "disqualified"
+
+
+def test_excluded_industry_scores_zero_even_with_matching_title():
+    icp = make_icp(exclude_industries=["Marketing and Advertising"])
+    lead = Lead(
+        id="6",
+        title="CMO",
+        industry="Marketing and Advertising",
+        company_size=200,
+        headline="growth",
+        location="United States",
+    )
+    assert score_lead(lead, icp) == 0
 
 
 def test_company_size_out_of_range_no_bonus():

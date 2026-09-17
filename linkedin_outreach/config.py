@@ -24,6 +24,7 @@ class ICPConfig:
     keywords: list[str]
     locations: list[str]
     exclude_titles: list[str]
+    exclude_industries: list[str]
     scoring_rules: list[ScoringRule]
     qualified_threshold: int
     max_results: int
@@ -65,6 +66,7 @@ def load_icp_config(path: str) -> ICPConfig:
         keywords=raw.get("keywords", []),
         locations=raw.get("locations", []),
         exclude_titles=raw.get("exclude_titles", []),
+        exclude_industries=raw.get("exclude_industries", []),
         scoring_rules=rules,
         qualified_threshold=raw.get("qualified_threshold", 60),
         max_results=raw.get("max_results", 200),

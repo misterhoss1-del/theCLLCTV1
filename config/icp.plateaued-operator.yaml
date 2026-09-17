@@ -41,6 +41,17 @@ exclude_titles:
   - Regional Manager
   - Multi-Unit Manager
 
+# Hard disqualifier, not just an absent bonus. Without this, an agency
+# owner who happens to match on title/headcount/revenue (all common in
+# small marketing shops too) can cross threshold on those alone — the
+# exact class REI's thesis is positioned against, not sold to.
+exclude_industries:
+  - Marketing and Advertising
+  - Advertising
+  - Public Relations and Communications
+  - Design
+  - Market Research
+
 # Service-based categories where trust and reputation drive the buy —
 # med spas, home services, professional services, local B2B.
 industries:

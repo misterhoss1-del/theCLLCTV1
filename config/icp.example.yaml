@@ -10,6 +10,11 @@ exclude_titles:
   - Intern
   - Assistant
 
+# Optional hard disqualifier: a matching industry here zeroes the lead
+# regardless of any other signal, the same way exclude_titles does for
+# titles. Leave empty ([]) if no industry should be a hard no.
+exclude_industries: []
+
 industries:
   - Marketing and Advertising
   - Computer Software
