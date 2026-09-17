@@ -51,18 +51,18 @@ cp .env.example .env   # fill in APOLLO_API_KEY and HUBSPOT_ACCESS_TOKEN
 ## Usage
 
 ```bash
-python -m linkedin_outreach.cli prospect --icp config/icp.example.yaml
-python -m linkedin_outreach.cli score --icp config/icp.example.yaml
-python -m linkedin_outreach.cli sequence --sequence config/sequences.example.yaml --out messages.csv
+python -m linkedin_outreach.cli prospect --icp config/icp.plateaued-operator.yaml
+python -m linkedin_outreach.cli score --icp config/icp.plateaued-operator.yaml
+python -m linkedin_outreach.cli sequence --sequence config/sequences.rei.yaml --out messages.csv
 python -m linkedin_outreach.cli sync
 python -m linkedin_outreach.cli status
 ```
 
 Copy `config/icp.example.yaml` and `config/sequences.example.yaml` to define
 your own ICP and message sequences — nothing about targeting or copy is
-hardcoded. `config/icp.plateaued-operator.yaml` is a real, tightly-drawn ICP
-built for a specific thesis — use it as the reference for how deep a
-production ICP config should go.
+hardcoded. `config/icp.plateaued-operator.yaml` and `config/sequences.rei.yaml`
+are the live production pair, built for REI's actual offer and buyer — use
+them as the reference for how deep a production config should go.
 
 ### ICP config
 
@@ -79,11 +79,18 @@ config file as comments for the human reviewing the qualified list, the way
 `icp.plateaued-operator.yaml` does; the pipeline can't act on them, but a
 person screening the output can.
 
-### Sequence config (`config/sequences.example.yaml`)
+### Sequence config
 
 Defines the touch cadence: each step has a name, an `offset_days` (days
 after the connection request to send it), and a `template` using
 `{first_name}`, `{last_name}`, `{title}`, `{company}`, `{industry}` tokens.
+
+`sequences.rei.yaml` is written for the Trust Tax / infrastructure-not-marketing
+positioning: connection request stays under LinkedIn's ~300-character note
+limit, and price is deliberately never mentioned in cold copy — it's a
+qualification filter for the sales call, not an opener, since naming it
+early would pre-select for the price shoppers this ICP explicitly
+disqualifies.
 
 ## Tests
 
