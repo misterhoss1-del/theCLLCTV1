@@ -14,6 +14,8 @@ CREATE TABLE IF NOT EXISTS leads (
     company TEXT,
     industry TEXT,
     company_size INTEGER,
+    annual_revenue INTEGER,
+    founded_year INTEGER,
     location TEXT,
     email TEXT,
     headline TEXT,
@@ -37,6 +39,8 @@ class Lead:
     company: str | None = None
     industry: str | None = None
     company_size: int | None = None
+    annual_revenue: int | None = None
+    founded_year: int | None = None
     location: str | None = None
     email: str | None = None
     headline: str | None = None
@@ -61,30 +65,30 @@ class LeadStore:
             self.conn.execute(
                 """
                 UPDATE leads SET linkedin_url=?, first_name=?, last_name=?, title=?,
-                    company=?, industry=?, company_size=?, location=?, email=?,
-                    headline=?, updated_at=?
+                    company=?, industry=?, company_size=?, annual_revenue=?, founded_year=?,
+                    location=?, email=?, headline=?, updated_at=?
                 WHERE id=?
                 """,
                 (
                     lead.linkedin_url, lead.first_name, lead.last_name, lead.title,
-                    lead.company, lead.industry, lead.company_size, lead.location,
-                    lead.email, lead.headline, datetime.now(timezone.utc).isoformat(),
-                    lead.id,
+                    lead.company, lead.industry, lead.company_size, lead.annual_revenue,
+                    lead.founded_year, lead.location, lead.email, lead.headline,
+                    datetime.now(timezone.utc).isoformat(), lead.id,
                 ),
             )
         else:
             self.conn.execute(
                 """
                 INSERT INTO leads (id, linkedin_url, first_name, last_name, title, company,
-                    industry, company_size, location, email, headline, score, status,
-                    sequence_step, created_at, updated_at)
-                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                    industry, company_size, annual_revenue, founded_year, location, email,
+                    headline, score, status, sequence_step, created_at, updated_at)
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
                 """,
                 (
                     lead.id, lead.linkedin_url, lead.first_name, lead.last_name, lead.title,
-                    lead.company, lead.industry, lead.company_size, lead.location, lead.email,
-                    lead.headline, lead.score, lead.status, lead.sequence_step,
-                    lead.created_at, lead.updated_at,
+                    lead.company, lead.industry, lead.company_size, lead.annual_revenue,
+                    lead.founded_year, lead.location, lead.email, lead.headline, lead.score,
+                    lead.status, lead.sequence_step, lead.created_at, lead.updated_at,
                 ),
             )
         self.conn.commit()

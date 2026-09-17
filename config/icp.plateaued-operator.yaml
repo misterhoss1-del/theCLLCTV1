@@ -1,0 +1,96 @@
+# ICP: The Plateaued Operator
+#
+# Firmographics: $500K–$3M revenue, 5–15 years operating, 3–25 employees,
+# service-based (med spas, home services, professional services, local B2B).
+# Psychographic core: already paid the Trust Tax on a prior agency/freelancer,
+# identifies as operator not marketer, time-poor not idea-poor — buying
+# execution infrastructure, not a marketing class.
+#
+# Disqualifiers this file CANNOT screen for — check manually before outreach:
+#   - Franchise/corporate-owned locations (decisions run through committee)
+#   - Founder-hustle-mode operators who'll ghost at implementation
+#   - Price shoppers who haven't internalized the Commodity Indictment thesis
+# Apollo firmographic data doesn't reliably expose franchise structure or
+# buying-trigger timing (just got burned by an agency, referrals drying up,
+# first ops hire). Screen for those on the call, not in this config.
+
+name: plateaued-operator
+
+# Owner-operator titles only — the direct-conversation sales model this ICP
+# is built around dies the moment a request routes through committee.
+titles:
+  - Owner
+  - Founder
+  - Co-Founder
+  - CEO
+  - President
+  - Managing Partner
+  - Principal
+  - Owner Operator
+  - Managing Director
+
+# Anyone with a real marketing title already has the in-house layer this
+# thesis says they lack. Regional/multi-unit titles are a franchise-structure
+# proxy — imperfect, but the cheapest signal available at search time.
+exclude_titles:
+  - Chief Marketing Officer
+  - VP of Marketing
+  - Director of Marketing
+  - Marketing Manager
+  - Franchise Manager
+  - Regional Manager
+  - Multi-Unit Manager
+
+# Service-based categories where trust and reputation drive the buy —
+# med spas, home services, professional services, local B2B.
+industries:
+  - Medical Practice
+  - Health, Wellness and Fitness
+  - Consumer Services
+  - Facilities Services
+  - Construction
+  - Legal Services
+  - Accounting
+  - Real Estate
+  - Professional Training & Coaching
+
+# 3–25 employees: past solo-founder, no real marketing department.
+company_size_min: 3
+company_size_max: 25
+
+# Headline signals for owner-operator identity and reputation-driven,
+# non-franchise local businesses.
+keywords:
+  - owner-operator
+  - founder
+  - family owned
+  - local
+
+locations:
+  - United States
+
+max_results: 200
+
+# Tight threshold on purpose — Commodity Indictment lives or dies on a
+# narrow ICP. Loose scoring here means you're selling marketing again.
+qualified_threshold: 70
+
+scoring_rules:
+  # Sweet spot inside the 3-25 band: enough team to delegate, not enough
+  # to have systematized growth already.
+  - field: company_size
+    range: [5, 20]
+    weight: 10
+
+  # $500K-$3M annual revenue: past survival, not yet systematized —
+  # requires Apollo org data to include annual_revenue (enrichment-tier
+  # data; falls out of scoring silently for leads where it's missing).
+  - field: annual_revenue
+    range: [500000, 3000000]
+    weight: 20
+
+  # 5-15 years operating as of 2026 (founded 2011-2021): long enough to
+  # have built reputation off word-of-mouth, not a startup.
+  - field: founded_year
+    range: [2011, 2021]
+    weight: 15

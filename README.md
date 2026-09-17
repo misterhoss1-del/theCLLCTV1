@@ -60,15 +60,24 @@ python -m linkedin_outreach.cli status
 
 Copy `config/icp.example.yaml` and `config/sequences.example.yaml` to define
 your own ICP and message sequences — nothing about targeting or copy is
-hardcoded.
+hardcoded. `config/icp.plateaued-operator.yaml` is a real, tightly-drawn ICP
+built for a specific thesis — use it as the reference for how deep a
+production ICP config should go.
 
-### ICP config (`config/icp.example.yaml`)
+### ICP config
 
 Defines who counts as a fit: target titles, excluded titles, industries,
 company size range, keywords, locations, `max_results`, and
-`qualified_threshold`. Add arbitrary `scoring_rules` entries to weight any
-field on the lead record (e.g. bonus points for a tighter company-size
-band).
+`qualified_threshold`. Add arbitrary `scoring_rules` entries to weight *any*
+field on the lead record — including `annual_revenue` and `founded_year`,
+which Apollo returns on the organization object when available, letting you
+score on revenue stage and business age, not just headcount.
+
+Some qualifying signals can't be scored from Apollo data at all — franchise
+structure, timing triggers like "just churned an agency." Put those in the
+config file as comments for the human reviewing the qualified list, the way
+`icp.plateaued-operator.yaml` does; the pipeline can't act on them, but a
+person screening the output can.
 
 ### Sequence config (`config/sequences.example.yaml`)
 
