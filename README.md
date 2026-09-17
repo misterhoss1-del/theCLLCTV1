@@ -48,6 +48,22 @@ cp .env.example .env   # fill in APOLLO_API_KEY and HUBSPOT_ACCESS_TOKEN
 - `HUBSPOT_ACCESS_TOKEN` — HubSpot private app access token with
   `crm.objects.contacts.write` scope.
 
+### HubSpot custom properties (one-time, before the first `sync`)
+
+`sync` writes two custom contact properties this integration owns —
+HubSpot doesn't create them for you, and `batch/upsert` rejects the whole
+request if either is missing. In HubSpot: **Settings → Properties →
+Contact properties → Create property**, twice:
+
+| Name (internal) | Label | Type |
+|---|---|---|
+| `linkedin_outreach_score` | LinkedIn Outreach Score | Number |
+| `linkedin_outreach_status` | LinkedIn Outreach Status | Single-line text |
+
+Everything else `sync` writes (`email`, `firstname`, `lastname`, `jobtitle`,
+`company`, `industry`, `hs_linkedin_url`) is a HubSpot default property and
+needs no setup.
+
 ## Usage
 
 ```bash

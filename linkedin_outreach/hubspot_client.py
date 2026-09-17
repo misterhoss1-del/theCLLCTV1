@@ -22,6 +22,11 @@ class HubSpotClient:
         )
 
     def upsert_contact(self, lead: Lead) -> dict[str, Any]:
+        # linkedin_outreach_score and linkedin_outreach_status are custom
+        # properties this integration owns, not HubSpot defaults — create
+        # them once in Settings > Properties > Contact before the first
+        # sync (see README). HubSpot's batch upsert rejects the whole
+        # request if a property doesn't exist.
         if not lead.email:
             raise ValueError(f"lead {lead.id} has no email; cannot upsert to HubSpot")
 
@@ -34,7 +39,7 @@ class HubSpotClient:
             "industry": lead.industry,
             "linkedin_outreach_score": lead.score,
             "linkedin_outreach_status": lead.status,
-            "linkedin_url": lead.linkedin_url,
+            "hs_linkedin_url": lead.linkedin_url,
         }
         properties = {k: v for k, v in properties.items() if v is not None}
 
