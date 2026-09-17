@@ -1,0 +1,30 @@
+name: default-sequence
+
+steps:
+  - name: connection_request
+    offset_days: 0
+    template: >-
+      Hi {first_name} — noticed your work leading {title} at {company}.
+      I work with {industry} teams on cutting acquisition cost without
+      adding headcount. Open to connecting?
+
+  - name: follow_up_1
+    offset_days: 3
+    template: >-
+      Thanks for connecting, {first_name}. Curious how {company} is
+      approaching pipeline growth right now — worth a 15-minute call to
+      compare notes?
+
+  - name: follow_up_2
+    offset_days: 7
+    template: >-
+      {first_name}, following up in case the last note got buried.
+      Happy to send over a two-minute breakdown of what's working for
+      similar {industry} teams instead, if that's easier.
+
+  - name: breakup
+    offset_days: 14
+    template: >-
+      No worries if now isn't the right time, {first_name}. I'll leave
+      the door open — reach out whenever growth at {company} becomes a
+      priority again.

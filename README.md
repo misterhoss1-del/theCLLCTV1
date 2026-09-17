@@ -1,2 +1,87 @@
-# theCLLCTV1
-a repository for theCLLCTV 
+# theCLLCTV1 — LinkedIn Outreach Lead Engine
+
+A config-driven pipeline for building qualified LinkedIn outreach lists: source
+prospects against an ICP, score them, generate personalized multi-touch
+message copy, and sync qualified leads into HubSpot.
+
+## Compliance boundary
+
+LinkedIn's Terms of Service prohibit automated connection requests, DMs, and
+profile scraping — accounts that do it get rate-limited, shadow-banned, or
+permanently suspended. This system stops at generating the target list and
+the message copy. **Sending happens manually, inside LinkedIn (or Sales
+Navigator), by a person.** Nothing here logs into LinkedIn or automates
+actions on it.
+
+## Pipeline
+
+```
+prospect  →  score  →  sequence  →  sync
+(Apollo)     (ICP)     (copy CSV)   (HubSpot)
+```
+
+1. **prospect** — searches Apollo.io for people matching an ICP config
+   (titles, industry, company size, location, keywords) and stores them
+   locally.
+2. **score** — applies weighted ICP-fit rules to every new lead; leads at or
+   above `qualified_threshold` move to `qualified`, the rest to
+   `disqualified`.
+3. **sequence** — renders a multi-touch message sequence (connection
+   request → follow-ups → breakup) for every qualified lead and writes it to
+   a CSV for manual sending. Leads move to `sequenced`.
+4. **sync** — upserts sequenced leads with an email address into HubSpot as
+   contacts (score, status, and LinkedIn URL included), and marks them
+   `synced`.
+
+Lead state lives in a local SQLite file (`outreach.db` by default) so the
+pipeline can be re-run incrementally without re-processing leads.
+
+## Setup
+
+```bash
+python3 -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env   # fill in APOLLO_API_KEY and HUBSPOT_ACCESS_TOKEN
+```
+
+- `APOLLO_API_KEY` — Apollo.io API key (Settings → API in Apollo).
+- `HUBSPOT_ACCESS_TOKEN` — HubSpot private app access token with
+  `crm.objects.contacts.write` scope.
+
+## Usage
+
+```bash
+python -m linkedin_outreach.cli prospect --icp config/icp.example.yaml
+python -m linkedin_outreach.cli score --icp config/icp.example.yaml
+python -m linkedin_outreach.cli sequence --sequence config/sequences.example.yaml --out messages.csv
+python -m linkedin_outreach.cli sync
+python -m linkedin_outreach.cli status
+```
+
+Copy `config/icp.example.yaml` and `config/sequences.example.yaml` to define
+your own ICP and message sequences — nothing about targeting or copy is
+hardcoded.
+
+### ICP config (`config/icp.example.yaml`)
+
+Defines who counts as a fit: target titles, excluded titles, industries,
+company size range, keywords, locations, `max_results`, and
+`qualified_threshold`. Add arbitrary `scoring_rules` entries to weight any
+field on the lead record (e.g. bonus points for a tighter company-size
+band).
+
+### Sequence config (`config/sequences.example.yaml`)
+
+Defines the touch cadence: each step has a name, an `offset_days` (days
+after the connection request to send it), and a `template` using
+`{first_name}`, `{last_name}`, `{title}`, `{company}`, `{industry}` tokens.
+
+## Tests
+
+```bash
+pytest
+```
+
+Covers the scoring engine (ICP matching, exclusions, custom rules) and the
+sequence renderer (token substitution, missing-field fallback, unknown-token
+errors).
