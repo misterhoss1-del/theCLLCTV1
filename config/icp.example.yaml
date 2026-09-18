@@ -1,0 +1,39 @@
+name: default-icp
+
+titles:
+  - VP of Marketing
+  - Head of Marketing
+  - CMO
+  - Director of Growth
+
+exclude_titles:
+  - Intern
+  - Assistant
+
+# Optional hard disqualifier: a matching industry here zeroes the lead
+# regardless of any other signal, the same way exclude_titles does for
+# titles. Leave empty ([]) if no industry should be a hard no.
+exclude_industries: []
+
+industries:
+  - Marketing and Advertising
+  - Computer Software
+
+company_size_min: 50
+company_size_max: 1000
+
+keywords:
+  - brand
+  - growth
+  - demand generation
+
+locations:
+  - United States
+
+max_results: 200
+qualified_threshold: 60
+
+scoring_rules:
+  - field: company_size
+    range: [50, 500]
+    weight: 10

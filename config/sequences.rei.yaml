@@ -1,0 +1,48 @@
+# Sequence: REI — Revenue Infrastructure
+#
+# Written for The Plateaued Operator (config/icp.plateaued-operator.yaml).
+# Positioning discipline, every step:
+#   - "Infrastructure installed," never "marketing" or "content."
+#   - Speaks to the Trust Tax directly — they've already been burned once,
+#     copy that pretends otherwise gets filtered as noise.
+#   - No price in cold copy. $3,500/mo is a qualification filter, not an
+#     opener — reveal it on the call once fit is established, not before.
+#     Naming it here would pre-select for price shoppers, who are an
+#     explicit disqualifier on this ICP.
+#   - Connection request stays under LinkedIn's ~300-char note limit.
+
+name: rei-plateaued-operator
+
+steps:
+  - name: connection_request
+    offset_days: 0
+    template: >-
+      Hi {first_name} — most {industry} owners at your stage are still
+      selling on referrals alone. I install the revenue infrastructure
+      that removes that ceiling — not more content. Worth connecting?
+
+  - name: follow_up_1
+    offset_days: 3
+    template: >-
+      Thanks for connecting, {first_name}. Most operators I talk to at
+      {company} have already tried an agency or freelancer that delivered
+      "content" with zero attribution to revenue. REI installs the
+      infrastructure instead — systems you own, not another class to sit
+      through. Worth 15 minutes to see if it fits {company}?
+
+  - name: follow_up_2
+    offset_days: 7
+    template: >-
+      {first_name}, following up. If that last note sounded like every
+      other agency that's already cost you money, fair — you've heard it
+      before. REI isn't content or coaching, it's infrastructure installed
+      once and owned by you. Happy to send a two-minute breakdown of what
+      that looks like for a {industry} business your size, no call
+      required.
+
+  - name: breakup
+    offset_days: 14
+    template: >-
+      No pressure, {first_name} — growth infrastructure isn't top of mind
+      for everyone right now. If the plateau {company} is on ever gets
+      loud enough to act on, I'll be here.
