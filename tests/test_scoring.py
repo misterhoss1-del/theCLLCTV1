@@ -70,6 +70,22 @@ def test_company_size_out_of_range_no_bonus():
     assert score == 50
 
 
+def test_industry_outside_icp_list_disqualifies_despite_other_matches():
+    icp = make_icp()
+    lead = Lead(
+        id="7",
+        title="CMO",
+        industry="Logistics",
+        company_size=200,
+        headline="scaling growth",
+        location="United States",
+    )
+    # title(30) + size(15) + keyword(15) + location(10) = 70, over
+    # threshold on everything except industry, which isn't in the ICP's
+    # target list — must still disqualify.
+    assert score_lead(lead, icp) == 0
+
+
 def test_custom_scoring_rule_adds_weight():
     from linkedin_outreach.config import ScoringRule
 

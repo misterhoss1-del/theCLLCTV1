@@ -19,7 +19,14 @@ def score_lead(lead: Lead, icp: ICPConfig) -> int:
     if lead.industry and any(i.lower() in industry for i in icp.exclude_industries):
         return 0
 
-    if lead.industry and any(i.lower() in industry for i in icp.industries):
+    # icp.industries is a hard gate, not a bonus: without it, a lead in any
+    # industry not on the exclude list can still clear threshold on
+    # title/size/keyword/location alone — exactly how a SaaS co-founder
+    # qualified against a med-spa/home-services ICP that never listed
+    # "computer software" anywhere.
+    if icp.industries:
+        if not lead.industry or not any(i.lower() in industry for i in icp.industries):
+            return 0
         score += 20
 
     if lead.company_size is not None:
