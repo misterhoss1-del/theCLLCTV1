@@ -68,11 +68,21 @@ needs no setup.
 
 ```bash
 python -m linkedin_outreach.cli prospect --icp config/icp.plateaued-operator.yaml
+python -m linkedin_outreach.cli import-csv --path leads.csv      # Apollo-style people export
+python -m linkedin_outreach.cli import-xlsx --path companies.xlsx # local-business-list export
 python -m linkedin_outreach.cli score --icp config/icp.plateaued-operator.yaml
 python -m linkedin_outreach.cli sequence --sequence config/sequences.rei.yaml --out messages.csv
 python -m linkedin_outreach.cli sync
 python -m linkedin_outreach.cli status
 ```
+
+`import-csv` expects an Apollo-style people export (First Name, Last Name,
+Title, Company, Email, Person Linkedin Url, Industry, ...). `import-xlsx`
+expects a local-business-list export (Business, Categories, Revenue,
+Employees, Founded, Contact First/Last Name, Contact Role, Contact Email,
+...) — the kind a Google-Maps/GMB scraper produces. It skips company rows
+with no named contact (nobody to reach on LinkedIn) and infers an
+ICP-shaped industry from Categories since this format doesn't carry one.
 
 Copy `config/icp.example.yaml` and `config/sequences.example.yaml` to define
 your own ICP and message sequences — nothing about targeting or copy is

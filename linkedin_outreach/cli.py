@@ -5,7 +5,7 @@ import sys
 
 from dotenv import load_dotenv
 
-from . import csv_import, pipeline
+from . import csv_import, pipeline, xlsx_import
 from .config import db_path, load_icp_config, load_sequence_config
 from .store import LeadStore
 
@@ -20,6 +20,12 @@ def cmd_prospect(args: argparse.Namespace) -> None:
 def cmd_import_csv(args: argparse.Namespace) -> None:
     store = LeadStore(db_path())
     count = csv_import.import_csv(store, args.path)
+    print(f"imported {count} leads from {args.path}")
+
+
+def cmd_import_xlsx(args: argparse.Namespace) -> None:
+    store = LeadStore(db_path())
+    count = xlsx_import.import_xlsx(store, args.path, sheet=args.sheet)
     print(f"imported {count} leads from {args.path}")
 
 
@@ -63,6 +69,13 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("import-csv", help="import leads from an Apollo-style CSV export")
     p.add_argument("--path", required=True, help="path to CSV file")
     p.set_defaults(func=cmd_import_csv)
+
+    p = sub.add_parser(
+        "import-xlsx", help="import leads from a local-business-list xlsx export"
+    )
+    p.add_argument("--path", required=True, help="path to xlsx file")
+    p.add_argument("--sheet", default=None, help="worksheet name (default: first sheet)")
+    p.set_defaults(func=cmd_import_xlsx)
 
     p = sub.add_parser("score", help="score new leads against an ICP")
     p.add_argument("--icp", required=True, help="path to ICP config yaml")
